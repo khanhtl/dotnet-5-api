@@ -1,5 +1,8 @@
-﻿using LoggerService;
+﻿using Entities.Models;
+using LoggerService;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CompanyEmployees.Extensions
@@ -15,12 +18,19 @@ namespace CompanyEmployees.Extensions
                 .AllowAnyHeader());
             });
 
+
         public static void ConfigureIISIntegration(this IServiceCollection services) =>
             services.Configure<IISOptions>(options =>
             {
 
             });
+
         public static void ConfigureLoggerService(this IServiceCollection services) =>
             services.AddScoped<ILoggerManager, LoggerManager>();
+
+        public static void ConfigureSqlContext(this IServiceCollection services,IConfiguration configuration) =>
+             services.AddDbContext<RepositoryContext>(opts =>
+             opts.UseSqlServer(configuration.GetConnectionString("sqlConnection")));
+
     }
 }
