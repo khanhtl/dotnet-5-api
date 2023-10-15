@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 using System.IO;
 using LoggerService;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyEmployees
 {
@@ -37,8 +38,14 @@ namespace CompanyEmployees
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
             })
+                .AddNewtonsoftJson()
                 .AddXmlDataContractSerializerFormatters()
                 .AddCustomCSVFormatter();
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
 
             services.AddSwaggerGen(c =>
             {
