@@ -29,6 +29,7 @@ namespace CompanyEmployees
             services.ConfigureIISIntegration();
             services.ConfigureLoggerService();
             services.ConfigureSqlContext(_configuration);
+            services.ConfigureRepositoryManager();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
