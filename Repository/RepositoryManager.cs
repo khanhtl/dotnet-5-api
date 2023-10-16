@@ -35,6 +35,14 @@ namespace Repository
                 return _employeeRepository;
             }
         }
-        public void Save() => _repositoryContext.SaveChanges();
+        public void Save()
+        {
+            _repositoryContext.SaveChanges();
+        }
+
+        public Task SaveAsync()
+        {
+            return _repositoryContext.SaveChangesAsync();
+        }
     }
 }
