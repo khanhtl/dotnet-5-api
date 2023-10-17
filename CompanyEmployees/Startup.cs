@@ -11,6 +11,7 @@ using NLog;
 using System.IO;
 using LoggerService;
 using Microsoft.AspNetCore.Mvc;
+using CompanyEmployees.Utility;
 
 namespace CompanyEmployees
 {
@@ -43,6 +44,8 @@ namespace CompanyEmployees
                 .AddNewtonsoftJson()
                 .AddXmlDataContractSerializerFormatters()
                 .AddCustomCSVFormatter();
+            services.AddCustomMediaTypes();
+            services.AddScoped<EmployeeLinks>();
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;

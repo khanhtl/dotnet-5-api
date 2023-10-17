@@ -4,11 +4,14 @@ using Entities.DataTransferObjects;
 using Entities.Models;
 using LoggerService;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Repository;
 using Repository.DataShaping;
+using System.Linq;
 
 namespace CompanyEmployees.Extensions
 {
@@ -58,11 +61,33 @@ namespace CompanyEmployees.Extensions
             services.AddScoped<ValidationFilterAttribute>();
             services.AddScoped<ValidateCompanyExistsAttribute>();
             services.AddScoped<ValidateEmployeeForCompanyExistsAttribute>();
+            services.AddScoped<ValidateMediaTypeAttribute>();
         }
 
         public static void ConfigureDataShape(this IServiceCollection services)
         {
             services.AddScoped<IDataShaper<EmployeeDto>, DataShaper<EmployeeDto>>();
         }
+        public static void AddCustomMediaTypes(this IServiceCollection services)
+        {
+            services.Configure<MvcOptions>(config =>
+            {
+                var newtonsoftJsonOutputFormatter = config.OutputFormatters.OfType<NewtonsoftJsonOutputFormatter>()?.FirstOrDefault();
+                if (newtonsoftJsonOutputFormatter != null)
+                {
+                    newtonsoftJsonOutputFormatter
+                    .SupportedMediaTypes
+                    .Add("application/vnd.codergenz.hateoas+json");
+                }
+                var xmlOutputFormatter = config.OutputFormatters.OfType<XmlDataContractSerializerOutputFormatter>()?.FirstOrDefault();
+                if (xmlOutputFormatter != null)
+                {
+                    xmlOutputFormatter
+                    .SupportedMediaTypes
+                    .Add("application/vnd.codergenz.hateoas+xml");
+                }
+            });
+        }
+
     }
 }
