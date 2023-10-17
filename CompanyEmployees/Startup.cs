@@ -30,6 +30,7 @@ namespace CompanyEmployees
             services.AddActionFilters();
             services.ConfigureCors();
             services.ConfigureIISIntegration();
+            services.ConfigureDataShape();
             services.ConfigureLoggerService();
             services.ConfigureSqlContext(_configuration);
             services.ConfigureRepositoryManager();
