@@ -78,6 +78,8 @@ namespace CompanyEmployees.Extensions
                     newtonsoftJsonOutputFormatter
                     .SupportedMediaTypes
                     .Add("application/vnd.codergenz.hateoas+json");
+                    newtonsoftJsonOutputFormatter
+                    .SupportedMediaTypes.Add("application/vnd.codergenz.apiroot+json");
                 }
                 var xmlOutputFormatter = config.OutputFormatters.OfType<XmlDataContractSerializerOutputFormatter>()?.FirstOrDefault();
                 if (xmlOutputFormatter != null)
@@ -85,6 +87,9 @@ namespace CompanyEmployees.Extensions
                     xmlOutputFormatter
                     .SupportedMediaTypes
                     .Add("application/vnd.codergenz.hateoas+xml");
+                    xmlOutputFormatter
+                    .SupportedMediaTypes
+                    .Add("application/vnd.codergenz.apiroot+xml"); 
                 }
             });
         }
