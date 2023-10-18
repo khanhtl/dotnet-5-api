@@ -37,10 +37,17 @@ namespace CompanyEmployees
             services.ConfigureRepositoryManager();
             services.AddAutoMapper(typeof(Startup));
             services.ConfigureVersioning();
+            services.ConfigureResponseCaching();
+
             services.AddControllers(config =>
             {
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
+                config.CacheProfiles.Add("120SecondsDuration", new CacheProfile
+                {
+                    Duration = 120
+                });
+
             })
                 .AddNewtonsoftJson()
                 .AddXmlDataContractSerializerFormatters()
@@ -84,6 +91,8 @@ namespace CompanyEmployees
             {
                 ForwardedHeaders = ForwardedHeaders.All
             });
+
+            app.UseResponseCaching();
 
             app.UseRouting();
 

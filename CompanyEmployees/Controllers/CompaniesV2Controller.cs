@@ -16,6 +16,7 @@ namespace CompanyEmployees.Controllers
             _repository = repository;
         }
         [HttpGet]
+        [ResponseCache(CacheProfileName = "120SecondsDuration")]
         public async Task<IActionResult> GetCompanies()
         {
             var companies = await _repository.Company.GetAllCompaniesAsync(trackChanges: false);
