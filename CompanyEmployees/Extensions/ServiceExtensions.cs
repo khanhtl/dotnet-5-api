@@ -12,9 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Repository;
 using Repository.DataShaping;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc.Versioning;
-using CompanyEmployees.Controllers;
 using Marvin.Cache.Headers;
+using System.Collections.Generic;
+using AspNetCoreRateLimit;
 
 namespace CompanyEmployees.Extensions
 {
@@ -125,6 +125,25 @@ namespace CompanyEmployees.Extensions
 
                 }
               );
+        }
+        public static void ConfigureRateLimitingOptions(this IServiceCollection services)
+        {
+            var rateLimitRules = new List<RateLimitRule>
+             {
+                 new RateLimitRule
+                 {
+                     Endpoint = "*",
+                     Limit= 3,
+                     Period = "5m"
+                 }
+             };
+            services.Configure<IpRateLimitOptions>(opt =>
+            {
+                opt.GeneralRules = rateLimitRules;
+            });
+            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
         }
     }
 }

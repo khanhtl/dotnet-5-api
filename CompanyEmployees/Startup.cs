@@ -12,6 +12,7 @@ using System.IO;
 using LoggerService;
 using Microsoft.AspNetCore.Mvc;
 using CompanyEmployees.Utility;
+using AspNetCoreRateLimit;
 
 namespace CompanyEmployees
 {
@@ -54,6 +55,9 @@ namespace CompanyEmployees
                 .AddCustomCSVFormatter();
             services.ConfigureResponseCaching();
             services.ConfigureHttpCacheHeaders();
+            services.AddMemoryCache();
+            services.ConfigureRateLimitingOptions();
+            services.AddHttpContextAccessor();
             services.AddCustomMediaTypes();
             services.AddScoped<EmployeeLinks>();
             services.Configure<ApiBehaviorOptions>(options =>
@@ -97,6 +101,8 @@ namespace CompanyEmployees
             app.UseResponseCaching();
 
             app.UseHttpCacheHeaders();
+
+            app.UseIpRateLimiting();
 
             app.UseRouting();
 
