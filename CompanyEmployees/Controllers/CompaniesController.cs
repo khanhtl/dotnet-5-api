@@ -6,6 +6,7 @@ using Entities.DataTransferObjects;
 using Entities.Models;
 using LoggerService;
 using Marvin.Cache.Headers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -37,7 +38,7 @@ namespace CompanyEmployees.Controllers
             return Ok();
         }
 
-        [HttpGet(Name = "GetCompanies")]
+        [HttpGet(Name = "GetCompanies"), Authorize]
         [ResponseCache(Duration = 60)]
         public async Task<IActionResult> GetCompanies()
         {

@@ -13,6 +13,8 @@ using LoggerService;
 using Microsoft.AspNetCore.Mvc;
 using CompanyEmployees.Utility;
 using AspNetCoreRateLimit;
+using Contracts;
+using Repository;
 
 namespace CompanyEmployees
 {
@@ -30,13 +32,21 @@ namespace CompanyEmployees
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddActionFilters();
+
             services.ConfigureCors();
+
             services.ConfigureIISIntegration();
+
             services.ConfigureDataShape();
+
             services.ConfigureLoggerService();
+
             services.ConfigureSqlContext(_configuration);
+
             services.ConfigureRepositoryManager();
+
             services.AddAutoMapper(typeof(Startup));
+
             services.ConfigureVersioning();
             
 
@@ -53,13 +63,27 @@ namespace CompanyEmployees
                 .AddNewtonsoftJson()
                 .AddXmlDataContractSerializerFormatters()
                 .AddCustomCSVFormatter();
+
             services.ConfigureResponseCaching();
+
             services.ConfigureHttpCacheHeaders();
+
             services.AddMemoryCache();
+
             services.ConfigureRateLimitingOptions();
+
             services.AddHttpContextAccessor();
+
             services.AddCustomMediaTypes();
-            services.AddScoped<EmployeeLinks>();
+
+            services.AddAuthentication();
+
+            services.ConfigureIdentity();
+
+            services.ConfigureJWT(_configuration);
+
+            services.UseRepository();
+
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
@@ -77,7 +101,9 @@ namespace CompanyEmployees
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
                 app.UseSwagger();
+
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CompanyEmployees v1"));
             }
             else
@@ -105,6 +131,8 @@ namespace CompanyEmployees
             app.UseIpRateLimiting();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
