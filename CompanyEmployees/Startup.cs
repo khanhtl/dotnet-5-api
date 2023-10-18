@@ -36,6 +36,7 @@ namespace CompanyEmployees
             services.ConfigureSqlContext(_configuration);
             services.ConfigureRepositoryManager();
             services.AddAutoMapper(typeof(Startup));
+            services.ConfigureVersioning();
             services.AddControllers(config =>
             {
                 config.RespectBrowserAcceptHeader = true;
