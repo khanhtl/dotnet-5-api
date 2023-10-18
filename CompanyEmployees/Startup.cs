@@ -37,7 +37,7 @@ namespace CompanyEmployees
             services.ConfigureRepositoryManager();
             services.AddAutoMapper(typeof(Startup));
             services.ConfigureVersioning();
-            services.ConfigureResponseCaching();
+            
 
             services.AddControllers(config =>
             {
@@ -52,6 +52,8 @@ namespace CompanyEmployees
                 .AddNewtonsoftJson()
                 .AddXmlDataContractSerializerFormatters()
                 .AddCustomCSVFormatter();
+            services.ConfigureResponseCaching();
+            services.ConfigureHttpCacheHeaders();
             services.AddCustomMediaTypes();
             services.AddScoped<EmployeeLinks>();
             services.Configure<ApiBehaviorOptions>(options =>
@@ -93,6 +95,8 @@ namespace CompanyEmployees
             });
 
             app.UseResponseCaching();
+
+            app.UseHttpCacheHeaders();
 
             app.UseRouting();
 
